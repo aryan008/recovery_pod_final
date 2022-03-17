@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<!--if statement that if todays entry has already been made-->
+{% if date_difference == 0 %}
+<h3 class=text-center>You have made today's entry already!</h3>
+<!--else statement-->
+{% else %}
+<div class="row">
+    <div class="col-10 offset-1 mt-3 mb-3">
+        <h2 class=text-center>Let's see how recovered you are!</h2>
+        <hr class="featurette-divider">
+        <br>
+        <!--form for the user to complete-->
+        <form method="POST" action="{{ url_for('new_entry') }}">
+            <p class="me-2">
+                Select Today's Date:
+                <!--datepicker for the user to select todays date-->
+                <span><input type="date" id="date_choice" name="date_choice" min="2021-06-01" max="2023-06-01"
+                        class="date-search" aria-label="date calendar - select todays date" required></span>
+            </p>
+            <!--for loop to grab all the options for each attribute-->
+            {% for option in options %}
+            <div>
+                <br>
+                <p class="entry-option-headings"><u>{{ option.attribute_name }}</u></p>
+                <h5><em class="option-narratives">{{ option.narrative }}</em></h5>
+                <br>
+                <br>
+                <!--select dropdown for each option-->
+                <select name="options.choice" id="options.choice" class="options-dropdown">
+                    <option value="{{ option.option_one }}">{{ option.option_one }}</option>
+                    <option value="{{ option.option_two }}">{{ option.option_two }}</option>
+                    <option value="{{ option.option_three }}">{{ option.option_three }}</option>
+                </select>
+            </div>
+            <hr class="featurette-divider">
+            {% endfor %}
+            <br>
+            <p class="me-2">
+                Enter any Comments:
+                <!--comments section for the user to input-->
+                <span><input id="comment_text" name="comment_text" type="text" class="validate comment-box"
+                        minlength="1" maxlength="50" aria-label="enter any comments"></span>
+            </p>
+            <br>
+            <hr class="featurette-divider">
+            <!--submit button to post entry-->
+            <button type="submit" class="btn btn-success post-entry-button" aria-label="post entry button">Post
+                Entry</button>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,7 +1,715 @@
-.text-shadow {
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+/*---Import of Google Fonts Lato font---*/
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+/*---General styling properties applied across the site---*/
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "Lato", sans-serif;
+    background-color: rgb(46, 45, 45);
+    color: rgb(255,255,255);
 }
 
-.flashes h4 {
-    line-height: 2;
+.navbar {
+    padding: 0;
+}
+
+.flashes {
+    padding: 15px;
+    text-align: center;
+}
+
+.active {
+    text-decoration: underline;
+    font-size: 1.1em;
+}
+
+button, .links {
+    cursor: pointer;
+}
+
+footer {
+    clear: both;
+    position: relative;
+}
+
+.footer-links a span i {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    border: 1px solid rgb(255,255,255);
+    margin: 5px;
+    cursor: pointer;
+    font-size: 40px;
+    padding: 20px 0;
+}
+
+.footer-links a span i:hover {
+    background-color: rgb(46, 45, 45);
+}
+
+.twitter {
+    color: rgb(6, 179, 209);
+    background-color: rgb(255,255,255);
+}
+
+.facebook {
+    color: rgb(33, 83, 190);
+    background-color: rgb(255,255,255);
+}
+
+.github {
+    color: rgb(228, 6, 6);
+    background-color: rgb(255,255,255);
+}
+
+.btn-danger {
+    background-color: #9F0414;
+}
+
+.btn-success {
+    background-color: #12593B;
+}
+
+.recovered {
+    background-color: rgb(15, 145, 15) !important;
+}
+
+.moderate {
+    background-color: rgb(216, 216, 39) !important;
+}
+
+.low {
+    background-color: rgb(190, 16, 16) !important;
+}
+
+/*---home page---*/ 
+.information-div {
+    border: 1px solid rgb(255,255,255);
+    font-size: 1rem;
+    border-radius: 10px;
+}
+
+.home-block,
+.home-block h4,
+.home-block h4 u,
+.home-block h5,
+.home-block p {
+    background-color: rgb(220, 220, 220);
+    color: rgb(46, 45, 45)
+}
+
+#home-page-circle {
+    width: 33%;
+    height: 250px;
+    width: 250px;
+    background-color: rgb(45, 46, 45);
+    border-radius: 50%;
+    border: 2px solid rgb(255,255,255);
+    margin: 115px auto;
+    text-align: center;
+    padding: 110px 10px;
+    box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.877);
+    position: relative;
+}
+
+.home-page-attributes {
+    list-style-type:none;
+}
+
+.left-div {
+    padding-top: 30px;
+    float: right; 
+    width: 33%;
+    text-align: left;
+    margin-right: 50px;
+}
+
+.right-div {
+    padding-top: 30px;
+    float: left; 
+    width: 33%;
+    text-align: right;
+    margin-left: 25px;
+}
+
+.left-div li, .right-div li {
+    height: 100px;
+    width: 100px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    border: 2px solid rgb(46, 45, 45);
+    margin: 2px auto;
+    text-align: center;
+    padding: 35px 5px;
+    color: rgb(46, 45, 45);
+    font-weight: bold;
+    font-size: .8rem;
+    position: relative;
+}
+
+.home-page-check-text i a, .link-colouring {
+    color: #A0C5FD;
+}
+
+/*---home page div colouring---*/ 
+#home-page-list-cold-therapy {
+    background-color: rgb(84, 194, 245);
+}
+
+#home-page-list-stretch {
+    background-color: rgb(243, 186, 0);
+}
+
+#home-page-list-nutrition {
+    background-color: rgb(88, 224, 106);
+}
+
+#home-page-list-smr {
+    background-color: rgb(233, 132, 107);
+}
+
+#home-page-list-training {
+    background-color: rgb(255, 244, 93);
+}
+
+#home-page-list-feeling {
+    background-color: rgb(161, 255, 93);
+}
+
+#home-page-list-sleep {
+    background-color: rgb(230, 137, 253);
+}
+
+#home-page-list-hydration {
+    background-color: rgb(0, 166, 243);
+}
+
+/*---about.html---*/ 
+.featurette-image {
+    width: 20rem;
+    height: 20rem;
+    border-radius: 50%;
+    border: 2px solid rgb(255,255,255);
+    box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.877);
+    margin: 35px auto;
+    /*---https://css-tricks.com/almanac/properties/i/image-rendering/---*/
+    image-rendering: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+.attribute-importance {
+    border: 3px solid rgb(46, 45, 45);
+    border-radius: 10px;
+    padding: 10px;
+    color: rgb(46, 45, 45);
+    background-color: rgb(255,255,255);
+    box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.877);
+}
+
+.links {
+    color: rgb(143, 198, 235);
+}
+
+/*---about.html font awesome icons---*/ 
+.water-font-awesome {
+    color: rgb(0, 166, 243);
+}
+
+.stretch-font-awesome {
+    color: rgb(243, 186, 0);
+}
+
+.smr-font-awesome {
+    color: rgb(233, 132, 107);
+}
+
+.cold-font-awesome {
+    color: rgb(84, 194, 245);
+}
+
+.nutrition-font-awesome {
+    color: rgb(88, 224, 106);
+}
+
+.train-font-awesome {
+    color: rgb(255, 244, 93);
+}
+
+.sleep-font-awesome {
+    color: rgb(230, 137, 253);
+}
+
+.feeling-font-awesome {
+    color: rgb(161, 255, 93);
+}
+
+/*---all_entries.html---*/ 
+.search-bar, .date-search, .options-dropdown, .comment-box {
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.score-percentage {
+    text-align: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50% !important;
+    background-color: white;
+}
+
+.table>:not(caption)>*>* {
+    background-color: rgb(46, 45, 45);
+}
+
+/*---profile.html---*/ 
+.result-container {
+    width: 37rem;
+    height: 37rem;
+    border-radius: 50%;
+    border: 2px solid rgb(255,255,255);
+    box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.877);
+    margin: 0 auto;
+}
+
+.inner-container {
+    width: 32rem;
+    height: 32rem;
+    border-radius: 50%;
+    border: 2px solid rgb(255,255,255);
+    margin: 2rem auto;
+}
+
+.result-div {
+    width: 100%;
+    height: 10%;
+    margin-top: 50px;
+    background-color: transparent;
+    font-size: 1.3rem;
+}
+
+.result-div p {
+    background-color: transparent;
+    margin-top: 60px;
+    font-size: 12rem;
+}
+
+.result-text {
+    background-color: transparent;
+    font-size: 1.8rem;
+    margin-top: 220px;
+}
+
+.awaiting-entry {
+    font-size: 2rem;
+    margin-top: 50px;
+    padding: 30px 0;
+    border: 2px solid rgb(46, 45, 45);
+    box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.877);
+    background-color: rgb(255,255,255);
+    border-radius: 10px;
+    color: rgb(46, 45, 45)
+
+}
+
+.entry-buttons {
+    background-color: transparent;
+    margin-top: -40px;
+}
+
+/*---new_entry.html---*/ 
+.entry-option-headings {
+    font-size: 2rem;;
+}
+
+.options-dropdown {
+    box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.877);
+}
+
+#comment_text {
+    width: 300px;
+}
+
+/*---pw_change.html---*/ 
+.password-div, .login-div, .create-account-div {
+    border: 3px solid rgb(255,255,255);
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.877);
+}
+
+.form-text {
+    color: rgb(255,255,255)
+}
+
+.form-warning-img {
+    color: rgb(248, 240, 0);
+}
+
+/*---Responsive media screen size design implementation---*/
+@media only screen and (max-width:1300px) {
+    #home-page-circle {
+        height: 170px;
+    }
+
+    #home-page-circle h4 {
+        font-size: 1.1rem;
+    }    
+
+    .right-div {
+        margin-left: 10px;
+    }
+
+    .featurette-image {
+        width: 18rem;
+        height: 18rem;
+    }
+
+    .attribute-importance {
+        font-size: .9rem;
+    }
+}
+
+@media only screen and (max-width:1135px) {
+    #home-page-circle {
+        height: 130px;
+        margin: 70px auto;
+    }
+
+    #home-page-circle h4 {
+        font-size: 1rem;
+    }    
+
+    .right-div {
+        margin-left: -5px;
+    }
+
+    .left-div li, .right-div li {
+        height: 80px;
+        width: 80px;
+        padding: 25px 5px;
+        font-size: .8rem;
+    }
+
+    .featurette-image {
+        width: 15rem;
+        height: 15rem;
+    }
+
+    .attribute-importance,.login-div, .create-account-div {
+        font-size: .8rem;
+    }
+}
+
+@media only screen and (max-width:950px) {
+    #home-page-circle {
+        height: 100px;
+        margin: 65px auto;
+    }
+
+    .featurette-image {
+        width: 12rem;
+        height: 12rem;
+    }
+
+    .attribute-importance, .links {
+        font-size: .7rem;
+    }
+}
+
+@media only screen and (max-width:830px) {
+    #home-page-circle {
+        width:20%;
+        height: 100px;
+        width: 100px;
+        border-radius: 10px;
+        border: none;
+        margin: 35px auto;
+        text-align: center;
+        padding: 110px 10px;
+        box-shadow: none;
+        position: relative;
+    }
+
+    #home-page-circle h4 {
+        font-size: .8rem;
+        border-radius: 10px;
+        border: 2px solid rgb(255,255,255);
+        padding: 30px 0;
+        text-align: center;
+        margin: 0 auto;
+        height: 100px;
+        width: 100px;
+        box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.877);
+    }    
+
+    .right-div {
+        margin-left: -5px;
+    }
+
+    .left-div li, .right-div li {
+        height: 80px;
+        width: 80px;
+        padding: 25px 5px;
+        font-size: .8rem;
+    }
+}
+
+@media only screen and (max-width:762px) {
+    .right-div {
+        margin-left: -15px;
+    }
+
+    .featurette-image {
+        display: none;
+    }
+
+    .result-container {
+        width: 32rem;
+        height: 32rem;
+    }
+
+    .inner-container {
+        width: 27rem;
+        height: 27rem;
+    }
+
+    .result-div {
+        font-size: 1rem;
+    }
+
+    .result-div p {
+        font-size: 10.5rem;
+    }
+
+    .result-text {
+        font-size: 1.2rem;
+    }
+}
+
+@media only screen and (max-width:606px) {
+    .right-div {
+        margin-left: -25px;
+    }
+
+    .result-container {
+        width: 30rem;
+        height: 30rem;
+    }
+
+    .inner-container {
+        width: 25rem;
+        height: 25rem;
+    }
+
+    .result-div {
+        font-size: .8rem;
+    }
+
+    .result-div p {
+        font-size: 9.5rem;
+    }
+
+    .result-text {
+        font-size: 1.1rem;
+        margin-top: 190px
+    }
+}
+
+@media only screen and (max-width:576px) {
+    .right-div {
+        margin-left: -35px;
+    }
+
+    .account-button {
+        font-size: 1rem;
+    }
+
+    .login-button, .pw-change-button, #passwordHelpInline, .reset-button, .search-button, .delete-account-button {
+        font-size: .8rem;
+    }
+
+    .table-entries {
+        font-size: .8rem;
+    }
+
+    .result-container {
+        width: 27rem;
+        height: 27rem;
+    }
+
+    .inner-container {
+        width: 22rem;
+        height: 22rem;
+    }
+
+    .result-div {
+        font-size: .7rem;
+    }
+
+    .result-div p {
+        font-size: 8rem;
+    }
+
+    .result-text {
+        font-size: 1rem;
+        margin-top: 150px;
+    }
+}
+
+@media only screen and (max-width:533px) {
+    #home-page-circle h4 {
+        font-size: .7rem;
+        padding: 20px 0px;
+        height: 75px;
+        width: 75px;
+        margin-left: 10px;
+    }
+
+    .edit-button, .delete-button {
+        font-size: .5rem;
+    }
+    .result-container {
+        width: 23rem;
+        height: 23rem;
+    }
+
+    .inner-container {
+        width: 18rem;
+        height: 18rem;
+    }
+
+    .result-div {
+        font-size: .7rem;
+    }
+
+    .result-div p {
+        font-size: 6rem;
+    }
+
+    .result-text {
+        font-size: .7rem;
+        margin-top: 130px;
+    }
+}
+
+@media only screen and (max-width:475px) {
+    .left-div li, .right-div li {
+        height: 60px;
+        width: 60px;
+        padding: 15px 5px;
+        font-size: .6rem;
+    }
+
+    #home-page-circle {
+        margin: 10px auto;
+    }
+
+    .entry-option-headings {
+        font-size: 1.5rem;
+    }
+}
+
+@media only screen and (max-width:450px) {
+    .left-div li, .right-div li {
+        height: 50px;
+        width: 50px;
+        padding: 10px 2px;
+        font-size: .55rem;
+    }
+
+    #home-page-circle {
+        margin: -15px 0px;
+        right: 10px;
+    }
+
+    .edit-button, .delete-button {
+        font-size: .5rem;
+    }
+
+    .user-delete-button {
+        font-size: .6rem;
+    }
+
+    .result-container {
+        width: 18rem;
+        height: 18rem;
+    }
+
+    .inner-container {
+        width: 14rem;
+        height: 14rem;
+    }
+
+    .result-div {
+        font-size: .7rem;
+        margin-bottom: 20px;
+    }
+
+    .result-div p {
+        font-size: 4rem;
+        margin-top: 30px;
+    }
+
+    .result-text {
+        font-size: .7rem;
+        margin-top: 50px;
+    }
+}
+
+@media only screen and (max-width:400px) {
+    .home-page-create-account, .home-page-login {
+        font-size: .8rem;
+    }
+
+    .home-page-check-text {
+        font-size: .9rem;
+    }
+
+    #home-page-circle h4 {
+        font-size: .7rem;
+        padding: 15px 0px;
+        height: 70px;
+        width: 70px;
+        margin-left: 10px;
+    }
+
+    .entry-option-headings {
+        font-size: 1.2rem;
+    }
+
+    #comment_text {
+        width: 250px;
+    }
+
+    .user-delete-button {
+        font-size: .5rem;
+    }
+}
+
+@media only screen and (max-width:360px) {
+    #home-page-circle h4 {
+        font-size: .7rem;
+        padding: 10px 0px;
+        height: 60px;
+        width: 60px;
+        margin-left: 5px;
+    }
+
+    .table-entries {
+        font-size: .6rem;
+    }
+
+    #comment_text {
+        width: 210px;
+    }
+
+    .option-narratives {
+        font-size: .8rem;
+    }
+
+    .edit-task-button, .cancel-button, .post-entry-button {
+        font-size: .8rem;
+    }
 }

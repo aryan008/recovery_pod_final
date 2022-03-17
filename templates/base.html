@@ -1,72 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recovery Pod</title>
+    <!--Bootstrap source code-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
-        integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA==" crossorigin="anonymous" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css">
+        integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA=="
+        crossorigin="anonymous" type="text/css">
+    <meta name="description" content="A recovery website for athletes to assess their readiness to train">
+    <!--Favicon link, generated at: https://favicon.io/favicon-converter/ -->
+    <link rel="shortcut icon" href="static/img/favicon.png" type="image/x-icon">
+    <!--Google Fonts Lato link to static/css/style.css -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <!--Font Awesome link -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+        integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     {% block styles %}
     {% endblock %}
-    <title>Task Manager</title>
 </head>
+
 <body>
-
-	<header>
-        <!-- top navbar -->
-		<nav class="nav-extended text-shadow light-blue darken-1">
-			<div class="nav-wrapper">
-				<a href="{{ url_for('get_tasks') }}" class="brand-logo">Task Manager</a>
-				<a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="fas fa-bars"></i></a>
-				<ul class="right hide-on-med-and-down">
-					<li><a href="{{ url_for('get_tasks') }}">Home</a></li>
-					<li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
-					<li><a href="#">New Task</a></li>
-					<li><a href="#">Manage Categories</a></li>
-					<li><a href="#">Log Out</a></li>
-					<li><a href="{{ url_for('login') }}">Log In</a></li>
-					<li><a href="{{ url_for('register') }}">Register</a></li>
-				</ul>
-			</div>
-		</nav>
-
-        <!-- mobile sidenav -->
-		<ul class="sidenav" id="mobile-demo">
-            <li><h4 class="center-align light-blue-text text-darken 4">Task Manager</h4></li>
-            <li><a href="{{ url_for('get_tasks') }}">Home</a></li>
-            <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
-            <li><a href="#">New Task</a></li>
-            <li><a href="#">Manage Categories</a></li>
-            <li><a href="#">Log Out</a></li>
-            <li><a href="{{ url_for('login') }}">Log In</a></li>
-            <li><a href="{{ url_for('register') }}">Register</a></li>
-		</ul>
-	</header>
-
+    <header class=mb-5>
+        <!--Navbar. Sourced from Bootstrap at: : https://getbootstrap.com/docs/5.0/forms/form-control/-->
+        <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('get_recovery') }}">Recovery Pod</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!--Navbar broken out by IF statement-->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <!--Show the home/about pages regardless of user status-->
+                        <li class="nav-item"><a class="nav-link" aria-current="page"
+                                href="{{ url_for('get_recovery') }}" aria-label="home page">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}"
+                                aria-label="about page">About</a></li>
+                        <!--If the user has logged in-->
+                        {% if session.user %}
+                        <!--If the user is an admin, manage users page is available-->
+                        {% if session.user|lower == "admin"|lower %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_users') }}"
+                                aria-label="manage users page">Manage Users</a>
+                        </li>
+                        {% endif %}
+                        <!--for all other users that are logged in, display the below pages-->
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('all_entries') }}"
+                                aria-label="all entries page">All Entries</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link"
+                                href="{{ url_for('profile', username=session['user']) }}"
+                                aria-label="profile page">Manage Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('new_entry') }}"
+                                aria-label="new entry page">New Entry</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"
+                                aria-label="logout page">Log Out</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('password_update') }}"
+                                aria-label="settings page">Settings</a>
+                        </li>
+                        {% else %}
+                        <!--Show the login/create account pages regardless of user status-->
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}"
+                                aria-label="login page">Log In</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('create_account') }}"
+                                aria-label="create account page">Create
+                                Account</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
     <section>
         <!-- flash messages -->
         {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="row flashes">
-                        <h4 class="light-blue lighten-4 center-align">{{ message }}</h4>
-                    </div>
-                {% endfor %}
-            {% endif %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="row flashes">
+            <h4>{{ message }}</h4>
+        </div>
+        {% endfor %}
+        {% endif %}
         {% endwith %}
     </section>
 
-    <main class="container">
+    <main class="container-fluid">
         {% block content %}
         {% endblock %}
     </main>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Footer -->
+    <footer>
+        <div class="container-fluid bottom">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item footer-links">
+                            <!--link and appropriate icon-->
+                            <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="link for twitter">
+                                <span>
+                                    <i class="fab fa-twitter twitter"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item footer-links">
+                            <!--link and appropriate icon-->
+                            <a href="https://www.facebook.com" target="_blank" rel="noopener"
+                                aria-label="link for facebook">
+                                <span>
+                                    <i class="fab fa-facebook facebook"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item footer-links">
+                            <!--link and appropriate icon-->
+                            <a href="https://github.com" target="_blank" rel="noopener" aria-label="link for github">
+                                <span>
+                                    <i class="fab fa-github github"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-center"><i>Copyright &copy; Recovery Pod<span id="copyright"></span></i>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--Script tags > JQuery and bootstrap plugins for JQuery use-->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+        crossorigin="anonymous"></script>
+    <!--Link to JS file-->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% block scripts %}
     {% endblock %}
 </body>
+
 </html>

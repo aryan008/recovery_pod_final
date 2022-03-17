@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-10 offset-1 mt-3 mb-3">
+            <h3 class=text-center>All Entries</h3>
+            <hr class="featurette-divider">
+            <!--Search form for the user to interact with-->
+            <form action="{{ url_for('search_entries') }}" method="post">
+                <div>
+                    <label for="query_entry" class="me-2">
+                        Search Users
+                    </label>
+                    <input type="text" name="query_entry" id="query_entry" class="validate search-bar"
+                        aria-label="input field to search users" required>
+                </div>
+                <br>
+                <div>
+                    <a href="{{ url_for('all_entries') }}" class="btn btn-danger btn-sm reset-button"
+                        aria-label="reset button">Reset</a>
+                    <button type="submit" class="btn btn-info btn-sm search-button"
+                        aria-label="search button">Search</button>
+                </div>
+            </form>
+            <br>
+            <!--if the user entries have a result, they will show. Or else narrative on no results found-->
+            {% if full_entries_list|length > 0 %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Created By</th>
+                        <th>Date</th>
+                        <th>Score(%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--for loop to pull in all the entries in a table-->
+                    {% for entry in full_entries_list %}
+                    <tr class="table-entries">
+                        <td>{{ entry.created_by }}</td>
+                        <td>{{ entry.user_chosen_date }}</td>
+                        <td class="score-percentage">{{ entry.score }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h3>No Results Found</h3>
+            {% endif %}
+            <br>
+            <hr class="featurette-divider">
+        </div>
+    </div>
+</div>
+{% endblock %}
