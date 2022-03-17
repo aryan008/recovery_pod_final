@@ -1,6 +1,6 @@
 <h1 align = "center">Recovery Pod</h1>
 
-View the live project at the following [link](https://recovery-pod.herokuapp.com/).
+View the live project at the following [link](http://recovery-pod-final.herokuapp.com/get_recovery).
 
 ![See how the site looks across the devices](static/rm_files/responsive.PNG)
 
