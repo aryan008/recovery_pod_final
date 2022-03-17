@@ -120,6 +120,115 @@ def login():
     return render_template("login.html")
 
 
+# Route for the profile page
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
+    # grab the session user's username from db
+    username = mongo.db.users.find_one(
+        {"username": session["user"]})["username"]
+
+    # if the user is in session
+    if session["user"]:
+        # call the get_result() & get_date() functions
+        result = get_result(username)
+        date_entered = get_date(username)
+        today = datetime.today().strftime('%Y-%m-%d')
+        day_1 = datetime.strptime(date_entered, "%Y-%m-%d")
+        day_2 = datetime.strptime(today, "%Y-%m-%d")
+
+        # https://stackoverflow.com/questions/8419564/difference-between-two-dates-in-python
+        # get the date difference between today and last entry
+        date_difference = abs((day_1 - day_2).days)
+        return render_template("profile.html", username=username,
+                               result=result, date_difference=date_difference,
+                               date_entered=date_entered)
+
+    else:
+        abort(404)
+
+
+# Route for the user to view the about page
+@app.route("/about")
+def about():
+    # create an empty list called data
+    data = []
+    # with statement to get the JSON file information
+    # and load into the data list
+    with open("data/attributes.json", "r") as json_data:
+        data = json.load(json_data)
+    return render_template("about.html", attribute_json=data)
+
+
+# Route for the user to delete their own individual profile
+@app.route("/delete_user_user/<username>", methods=["GET", "POST"])
+def delete_user_user(username):
+    # grab the user's username
+    username_user = mongo.db.users.find_one({"username": session["user"]})
+    if session['user']:
+        # remove the users account from the DB
+        # and all the entries they have made
+        mongo.db.users.remove({"username": username})
+        mongo.db.entries.remove({"created_by": username})
+        session.pop("user")
+        flash("Profile Deleted!")
+        return redirect(url_for("create_account"))
+
+    else:
+        abort(404)
+
+
+# Route for the user to update their password
+@app.route("/password_update", methods=["GET", "POST"])
+def password_update():
+    if request.method == "POST":
+        # find the user's current password
+        old_password = mongo.db.users.find_one(
+            {"username": session["user"]})["password"]
+        # if statement that checks if the entered password
+        # matches their stored password
+        if check_password_hash(old_password, request.form.get("old_password")):
+            # update the users password on the database
+            mongo.db.users.update_one(
+                {"username": session["user"]},
+                {"$set": {"password": generate_password_hash(
+                    request.form.get("newpassword"))}})
+            flash("Password Successfully updated")
+            return redirect(url_for("get_recovery"))
+        # if password entered doesn't match
+        else:
+            flash("Password is incorrect, please try again")
+            return render_template("pw_change.html")
+
+    return render_template("pw_change.html")
+
+
+# Route for the user to delete their entry for the day
+@app.route("/delete_entry/<username>")
+def delete_entry(username):
+    # find the users username
+    username = mongo.db.users.find_one(
+        {"username": session["user"]})["username"]
+
+    # if the user is in session
+    if session["user"]:
+        # find that user's latest entry
+        latest_entry_delete = mongo.db.entries.find(
+            {"created_by": username}).sort(username, -1)
+        latest_delete = list(latest_entry_delete)
+        last_entry_list = latest_delete[-1]
+        last_entry_list_final = list(last_entry_list.items())
+        # Below and above code to grab the _id of the users latest entry
+        final_delete = last_entry_list_final[1][1]
+        delete_id = last_entry_list_final[0][1]
+        # remove this entry from the database
+        mongo.db.entries.remove({"_id": delete_id})
+        flash("Entry Successfully Deleted!")
+        return redirect(url_for("profile", username=username))
+
+    else:
+        abort(404)
+
+
 # Route for the user to edit their entry for the day
 @app.route("/edit_entry/<username>", methods=["GET", "POST"])
 def edit_entry(username):
@@ -257,37 +366,6 @@ def edit_entry(username):
 
     else:
         abort(404)
-
-# Route for the user to view all entries on the all_entries page
-@app.route("/all_entries")
-def all_entries():
-    # if the user is in session
-    if session['user']:
-        # get all the entries ever made and turn into a list
-        full_entries = mongo.db.entries.find()
-        full_entries_list = list(full_entries)
-
-        # https://www.programiz.com/python-programming/methods/list/reverse
-        # reverse the list
-        reversed_list = full_entries_list.reverse()
-        return render_template("all_entries.html",
-                               full_entries_list=full_entries_list)
-
-    else:
-        abort(404)
-
-
-# Route for the user to search all entries based on username
-@app.route("/search_entries", methods=["GET", "POST"])
-def search_entries():
-    # get the users search input
-    query_entry = request.form.get("query_entry")
-
-    # Index creation: https://docs.mongodb.com/manual/indexes/
-    # find the users search input in the database
-    entries = list(mongo.db.entries.find({"$text": {"$search": query_entry}}))
-
-    return render_template("all_entries.html", full_entries_list=entries)
 
 
 # Route for the user to log out of their profile
@@ -573,86 +651,36 @@ def new_entry():
         abort(500)
 
 
-# Route for the profile page
-@app.route("/profile/<username>", methods=["GET", "POST"])
-def profile(username):
-    # grab the session user's username from db
-    username = mongo.db.users.find_one(
-        {"username": session["user"]})["username"]
-
+# Route for the user to view all entries on the all_entries page
+@app.route("/all_entries")
+def all_entries():
     # if the user is in session
-    if session["user"]:
-        # call the get_result() & get_date() functions
-        result = get_result(username)
-        date_entered = get_date(username)
-        today = datetime.today().strftime('%Y-%m-%d')
-        day_1 = datetime.strptime(date_entered, "%Y-%m-%d")
-        day_2 = datetime.strptime(today, "%Y-%m-%d")
-
-        # https://stackoverflow.com/questions/8419564/difference-between-two-dates-in-python
-        # get the date difference between today and last entry
-        date_difference = abs((day_1 - day_2).days)
-        return render_template("profile.html", username=username,
-                               result=result, date_difference=date_difference,
-                               date_entered=date_entered)
-
-    else:
-        abort(404)
-
-
-# Route for the user to view the about page
-@app.route("/about")
-def about():
-    # create an empty list called data
-    data = []
-    # with statement to get the JSON file information
-    # and load into the data list
-    with open("data/attributes.json", "r") as json_data:
-        data = json.load(json_data)
-    return render_template("about.html", attribute_json=data)
-
-
-# Route for the user to delete their own individual profile
-@app.route("/delete_user_user/<username>", methods=["GET", "POST"])
-def delete_user_user(username):
-    # grab the user's username
-    username_user = mongo.db.users.find_one({"username": session["user"]})
     if session['user']:
-        # remove the users account from the DB
-        # and all the entries they have made
-        mongo.db.users.remove({"username": username})
-        mongo.db.entries.remove({"created_by": username})
-        session.pop("user")
-        flash("Profile Deleted!")
-        return redirect(url_for("create_account"))
+        # get all the entries ever made and turn into a list
+        full_entries = mongo.db.entries.find()
+        full_entries_list = list(full_entries)
+
+        # https://www.programiz.com/python-programming/methods/list/reverse
+        # reverse the list
+        reversed_list = full_entries_list.reverse()
+        return render_template("all_entries.html",
+                               full_entries_list=full_entries_list)
 
     else:
         abort(404)
 
 
-# Route for the user to update their password
-@app.route("/password_update", methods=["GET", "POST"])
-def password_update():
-    if request.method == "POST":
-        # find the user's current password
-        old_password = mongo.db.users.find_one(
-            {"username": session["user"]})["password"]
-        # if statement that checks if the entered password
-        # matches their stored password
-        if check_password_hash(old_password, request.form.get("old_password")):
-            # update the users password on the database
-            mongo.db.users.update_one(
-                {"username": session["user"]},
-                {"$set": {"password": generate_password_hash(
-                    request.form.get("newpassword"))}})
-            flash("Password Successfully updated")
-            return redirect(url_for("get_recovery"))
-        # if password entered doesn't match
-        else:
-            flash("Password is incorrect, please try again")
-            return render_template("pw_change.html")
+# Route for the user to search all entries based on username
+@app.route("/search_entries", methods=["GET", "POST"])
+def search_entries():
+    # get the users search input
+    query_entry = request.form.get("query_entry")
 
-    return render_template("pw_change.html")
+    # Index creation: https://docs.mongodb.com/manual/indexes/
+    # find the users search input in the database
+    entries = list(mongo.db.entries.find({"$text": {"$search": query_entry}}))
+
+    return render_template("all_entries.html", full_entries_list=entries)
 
 
 # Route for the administrator to manage users profiles based on username
@@ -845,6 +873,18 @@ def get_result(username):
     except IndexError as error:
         narrative = "No entry yet, please submit one"
         return narrative
+
+
+# 404 error handler
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+# 500 error handler
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 
 if __name__ == "__main__":
