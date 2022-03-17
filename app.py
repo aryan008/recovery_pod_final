@@ -22,7 +22,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 ATTRIBUTE_1_DICT = {"No": 2, "Yes - Pool": 3, "Yes - Ice Bath/Sea Swim": 5}
 ATTRIBUTE_2_DICT = {"Not at all": 3, "Somewhat nutritious": 7,
                     "Very nutritious": 10}
-ATTRIBUTE_3_DICT = {"Yes - Tough session(s)": 5, "Yes - Light Session(s)": 10,
+ATTRIBUTE_3_DICT = {"Yes - Tough session(s)": 5, "Yes - Light session(s)": 10,
                     "No": 15}
 ATTRIBUTE_4_DICT = {"Less than 6 hours": 8, "6-7.5 hours": 17,
                     "7.5+ hours": 25}
